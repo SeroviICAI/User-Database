@@ -137,7 +137,7 @@ def section_2():
             print(f'{i + 1}. {ab_cat[i]}')
 
         message = 'Choose the categories: (format cat1-cat2...),\
-for example "1-4-6"\n'
+for example "1-4"\n'
         categories = input(message)
         try:
             categories = list(map(int, categories.split('-')))
@@ -147,7 +147,6 @@ for example "1-4-6"\n'
             return take_categories(cursor, ab_cat)
 
         return categories
-
 
     n = take_a_number('Enter the number of aleatory items to get: ')
     cursor = MYSLQ_CONN.cursor()

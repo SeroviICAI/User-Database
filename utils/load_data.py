@@ -9,7 +9,7 @@ import os
 
 from datetime import datetime as dt
 from typing import Dict, Tuple
-from time import sleep
+from time import sleep, time
 
 # Connect to the MongoDB and MySQL
 MONGO_CLIENT = connect_to_mongodb()
@@ -127,6 +127,16 @@ def _load_items(path_to_files="data"):
         # Stop spinning wheel animation
         stop_event.set()
 
+    data.append({
+        "reviewerID": "A3_B1S8AL_6V2A4", "asin": "5555991584",
+        "reviewerName": "David Bisbal", "helpful": [12, 12],
+        "reviewText": "¿Cómo están los máquinas? Lo primero de todo, ¿nos hacemos unas fotillos o qué?",
+        "overall": 5.0,"summary": "¿Como estan los máquinas?",
+        "unixReviewTime": 1084226400,
+        "reviewTime": '05 11, 2004',
+        'category': 'Digital music'
+        }
+)
     print("\rCompleted loading reviews")
     return data
 

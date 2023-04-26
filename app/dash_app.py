@@ -194,7 +194,7 @@ app.layout = html.Div([
                     dcc.Dropdown(
                         id='categories-dropdown-2',
                         options=[{'label': category, 'value': category} for category in categories],
-                        value=['Video games', 'Office'],
+                        value=['Video games', 'Digital music'],
                         multi=True,
                         style={'width': '450px'}
                     ),
