@@ -174,9 +174,9 @@ for example "1-4"\n'
         user = list(user.get('reviewer_id') for user in r)
         users.update(user)
         reviews[art] = {
-                            'reviewers': user,
-                            'overall': list(user.get('overall') for user in r),
-                            'reviewTime': list(user.get('reviewTime') for user in r)
+                        'reviewers': user,
+                        'overall': list(user.get('overall') for user in r),
+                        'reviewTime': list(user.get('reviewTime') for user in r)
                         }
 
     # Once we have the structure, we can add it to neo4j
@@ -374,12 +374,12 @@ def section_4():
                        """
 
     reviews_query = """
-                       MATCH (user:REVIEWER {id: $id_user} ),
+                       MATCH (user:REVIEWER {id: $id_user}),
                        (item:ITEM {id: $id_item})
                        CREATE (user) - [:REVIEWED] -> (item)
                        """
     common_query = """
-                     MATCH (user_1: REVIEWER {id: $id_user_1} ),
+                     MATCH (user_1: REVIEWER {id: $id_user_1}),
                      (user_2: REVIEWER {id: $id_user_2})
                      CREATE (user_1) - [:COMMON {cantidad: $cantidad}] -> (user_2)
                      """
