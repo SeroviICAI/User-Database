@@ -111,6 +111,8 @@ def create_database_mysql(name: str, user_details: Dict[int, int], item_details:
                     break
                 n += 1
                 new_db_name = f"{name}_{n}"
+                # Consume any unread results
+                cursor.fetchall()
             name = new_db_name
             print(f"Creating new database with name {name}.")
 
