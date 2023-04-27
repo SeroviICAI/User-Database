@@ -457,4 +457,4 @@ def update_fig7(user_ids_):
 
 
 def launch_app():
-    app.run_server(debug=True)
+    app.run_server(debug=False)
