@@ -5,7 +5,7 @@ NEO_DRIVER = connect_to_neo4j()
 MONGO_CLIENT = connect_to_mongodb()
 MYSLQ_CONN = connect_to_mysql()
 
-# Nos conectamos a la BD y a la coleccion necesarias
+# Connecting to our databases
 nom_bd = 'amz_reviews'
 MYSLQ_CONN.database = nom_bd
 
