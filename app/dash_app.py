@@ -97,9 +97,7 @@ app.layout = html.Div([
                     html.Br(),
                     html.Label(html.Strong("Select Categories:"), style={'font-size': '14px'}),
                     dcc.Dropdown(
-                        id='categories-dropdown',
-                        options=[{'label': category, 'value': category} for category in categories],
-                        value=categories,
+                        id='categories-dropdown-1',
                         multi=True
                     ),
                     html.Br(),
@@ -193,8 +191,6 @@ app.layout = html.Div([
                     html.Label(html.Strong("Select Categories:"), style={'font-size': '14px'}),
                     dcc.Dropdown(
                         id='categories-dropdown-2',
-                        options=[{'label': category, 'value': category} for category in categories],
-                        value=['Video games', 'Digital music'],
                         multi=True,
                         style={'width': '450px'}
                     ),
@@ -261,9 +257,7 @@ app.layout = html.Div([
                     html.Br(),
                     html.Label(html.Strong("Select Category:"), style={'font-size': '14px'}),
                     dcc.Dropdown(
-                        id='category-dropdown',
-                        options=[{'label': category, 'value': category} for category in categories],
-                        value='Video games',
+                        id='category-dropdown'
                     ),
                     html.Br(),
                     dcc.Graph(id='fig6')
@@ -333,6 +327,17 @@ def update_container(pathname):
 
 
 @app.callback(
+    [Output('categories-dropdown-1', 'options'),
+    Output('categories-dropdown-1', 'value')],
+    Input('url', 'pathname')
+)
+def update_categories_dropdown_1(pathname):
+    options=[{'label': category, 'value': category} for category in categories]
+    value=categories
+    return options, value
+
+
+@app.callback(
     Output('fig1', 'figure'),
     Input('categories-dropdown', 'value')
 )
@@ -389,6 +394,17 @@ def update_fig3(search_field, values):
 
 
 @app.callback(
+    [Output('categories-dropdown-2', 'options'),
+    Output('categories-dropdown-2', 'value')],
+    Input('url', 'pathname')
+)
+def update_categories_dropdown_2(pathname):
+    options=[{'label': category, 'value': category} for category in categories],
+    value=['Video games', 'Digital music']
+    return options, value
+
+
+@app.callback(
     [Output('date-range-picker', 'minDate'),
      Output('date-range-picker', 'maxDate'),
      Output('date-range-picker', 'value')],
@@ -420,6 +436,17 @@ def update_fig4(categories_, dates):
 )
 def update_fig5(limit):
     return generate_fig5(mongo_collection, limit)
+
+
+@app.callback(
+    [Output('category-dropdown', 'options'),
+    Output('category-dropdown', 'value')],
+    Input('url', 'pathname')
+)
+def update_category_dropdown(pathname):
+    options=[{'label': category, 'value': category} for category in categories],
+    value='Video games'
+    return options, value
 
 
 @app.callback(
