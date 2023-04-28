@@ -469,8 +469,8 @@ def update_fig7(user_ids_):
 def launch_app(mysql_db_name='amz_reviews', mongo_db_name='amz_reviews'):
     global mongo_collection, categories, item_ids, user_ids
 
-    mongo_collection = MONGO_CLIENT[mysql_db_name]['reviews']
-    cursor.execute(f'USE {mongo_db_name}')
+    mongo_collection = MONGO_CLIENT[mongo_db_name]['reviews']
+    cursor.execute(f'USE {mysql_db_name}')
 
     # Select different categories, item_ids and user_ids
     categories = mongo_collection.distinct('category')

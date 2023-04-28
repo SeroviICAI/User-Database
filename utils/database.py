@@ -89,10 +89,13 @@ def create_database_mysql(name: str, user_details: Dict[int, int], item_details:
     # If database with same name exists, prompt user for action
     if db_exists:
         print(f"Warning: A MySQL database with the name {name} already exists.")
-        action = input(
-            "Enter 'd' to drop the existing database or 'c' to create a new database with a different name: ")
         # Consume any unread results
         cursor.fetchall()
+        action = None
+        while action not in ['d', 'c']:
+            action = input(
+                "Enter 'd' to drop the existing database or 'c' to create a new database with a different name: ")
+
         if action == 'd':
             # Drop the existing database
             cursor.execute(f"DROP DATABASE {name}")
@@ -146,8 +149,10 @@ def create_database_mongodb(name) -> str:
     # If database with same name exists, prompt user for action
     if db_exists:
         print(f"Warning: A MongoDB database with the name {name} already exists.")
-        action = input(
-            "Enter 'd' to drop the existing database or 'c' to create a new database with a different name: ")
+        action = None
+        while action not in ['d', 'c']:
+            action = input(
+                "Enter 'd' to drop the existing database or 'c' to create a new database with a different name: ")
         if action == 'd':
             mongo_client.drop_database(name)
             print(f"Database {name} dropped.")
