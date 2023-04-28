@@ -335,7 +335,7 @@ def update_container(pathname):
 
 @app.callback(
     Output('fig1', 'figure'),
-    Input('categories-dropdown', 'value')
+    Input('categories-dropdown-1', 'value')
 )
 def update_fig1(categories_):
     return generate_fig1(mongo_collection, categories_)
