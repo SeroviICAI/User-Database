@@ -195,7 +195,7 @@ def create_layout():
                         dcc.Dropdown(
                             id='categories-dropdown-2',
                             options=[{'label': category, 'value': category} for category in categories],
-                            value=['Video games', 'Digital music'],
+                            value=random.sample(categories, 2),
                             multi=True,
                             style={'width': '450px'}
                         ),
@@ -264,7 +264,7 @@ def create_layout():
                         dcc.Dropdown(
                             id='category-dropdown',
                             options=[{'label': category, 'value': category} for category in categories],
-                            value='Video games',
+                            value=random.choice(categories),
                         ),
                         html.Br(),
                         dcc.Graph(id='fig6')
