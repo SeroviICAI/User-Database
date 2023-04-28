@@ -15,49 +15,50 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.SPACELAB, dbc.icons.BOOTST
 # Connect to MongoDB and MySQL databases
 MONGO_CLIENT = connect_to_mongodb()
 MySQL_CONN = connect_to_mysql()
-
-mongo_collection = MONGO_CLIENT['amz_reviews']['reviews']
 cursor = MySQL_CONN.cursor()
-cursor.execute('USE amz_reviews')
 
-# Select different categories
-categories = mongo_collection.distinct('category')
-item_ids = mongo_collection.distinct('item_id')
-user_ids = mongo_collection.distinct('reviewer_id')
+# Initialize different categories, item_ids and user_ids
+mongo_collection = None
+categories = []
+item_ids = []
+user_ids = []
 
-card_users = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Label([html.I(className="bi bi-people-fill"), html.Strong(" Num. Users: "),
-                       str(len(user_ids))],
-                       className="text-nowrap", style={'font-size': '20px'}),
-        ], className="border-start border-success border-5"
-    ),
-    className="text-center m-4"
-)
+def create_cards():
+    card_users = dbc.Card(
+        dbc.CardBody(
+            [
+                html.Label([html.I(className="bi bi-people-fill"), html.Strong(" Num. Users: "),
+                           str(len(user_ids))],
+                           className="text-nowrap", style={'font-size': '20px'}),
+            ], className="border-start border-success border-5"
+        ),
+        className="text-center m-4"
+    )
 
+    card_items = dbc.Card(
+        dbc.CardBody(
+            [
+                html.Label([html.I(className="bi bi-cart-fill"), html.Strong(" Num. Items: "),
+                           str(len(item_ids))], className="text-nowrap",
+                           style={'font-size': '20px'})
+            ], className="border-start border-danger border-5"
+        ),
+        className="text-center m-4",
+    )
 
-card_items = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Label([html.I(className="bi bi-cart-fill"), html.Strong(" Num. Items: "),
-                       str(len(item_ids))], className="text-nowrap",
-                       style={'font-size': '20px'})
-        ], className="border-start border-danger border-5"
-    ),
-    className="text-center m-4",
-)
+    card_reviews = dbc.Card(
+        dbc.CardBody(
+            [
+                html.Label([html.I(className="bi bi-journal-text"), html.Strong(" Num. Reviews: "),
+                           str(mongo_collection.count_documents({}))],
+                           className="text-nowrap", style={'font-size': '20px'})
+            ], className="border-start border-primary border-5"
+        ),
+        className="text-center m-4",
+    )
 
-card_reviews = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Label([html.I(className="bi bi-journal-text"), html.Strong(" Num. Reviews: "),
-                       str(mongo_collection.count_documents({}))],
-                       className="text-nowrap", style={'font-size': '20px'})
-        ], className="border-start border-primary border-5"
-    ),
-    className="text-center m-4",
-)
+    return [card_users, card_items, card_reviews]
+
 
 app.layout = html.Div([
     html.Div([
@@ -75,11 +76,10 @@ app.layout = html.Div([
 
     html.Div([
         html.Div([
+            dcc.Location(id='url', refresh=False),
             dbc.Container(
-                dbc.Row(
-                    [dbc.Col(card_users), dbc.Col(card_items), dbc.Col(card_reviews)],
-                ),
-                fluid=True,
+                id='container-id',
+                fluid=True
             ),
 
             html.Div([
@@ -324,6 +324,15 @@ app.layout = html.Div([
 
 
 @app.callback(
+    Output('container-id', 'children'),
+    Input('url', 'pathname')
+)
+def update_container(pathname):
+    cards = create_cards()
+    return dbc.Row([dbc.Col(card) for card in cards])
+
+
+@app.callback(
     Output('fig1', 'figure'),
     Input('categories-dropdown', 'value')
 )
@@ -456,5 +465,16 @@ def update_fig7(user_ids_):
     return generate_fig7(mongo_collection, user_ids_)
 
 
-def launch_app():
-    app.run_server(debug=False)
+def launch_app(mysql_db_name='amz_reviews', mongo_db_name='amz_reviews'):
+    global mongo_collection, categories, item_ids, user_ids
+
+    mongo_collection = MONGO_CLIENT[mysql_db_name]['reviews']
+    cursor.execute(f'USE {mongo_db_name}')
+
+    # Select different categories, item_ids and user_ids
+    categories = mongo_collection.distinct('category')
+    item_ids = mongo_collection.distinct('item_id')
+    user_ids = mongo_collection.distinct('reviewer_id')
+
+    # Run app
+    app.run(debug=False)

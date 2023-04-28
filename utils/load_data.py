@@ -274,7 +274,7 @@ def _save_data(users, items, reviews, mysql_db_name='amz_reviews', mongo_db_name
         # Stop spinning wheel animation
         stop_event.set()
     print(f"\rCompleted saving reviews in {mongo_db_name} (MongoDB)")
-    return
+    return mysql_db_name, mongo_db_name
 
 
 # Worker Thread function
@@ -330,7 +330,7 @@ def etl(path_to_files: str = 'data', user_details: Dict[str, str] = None, item_d
             items_list.extend(items)
             reviews_list.extend(reviews)
         # Save the results to disk
-        _save_data(users=users_list, items=items_list, reviews=reviews_list,
-                   mysql_db_name=mysql_db_name, mongo_db_name=mongo_db_name,
-                   user_details=user_details, item_details=item_details)
-    return
+        mysql_db_name, mongo_db_name = _save_data(users=users_list, items=items_list, reviews=reviews_list,
+                                                  mysql_db_name=mysql_db_name, mongo_db_name=mongo_db_name,
+                                                  user_details=user_details, item_details=item_details)
+    return mysql_db_name, mongo_db_name

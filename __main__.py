@@ -3,5 +3,5 @@ from utils.load_data import etl
 
 
 if __name__ == '__main__':
-    etl()
-    launch_app()
+    mysql_db_name, mongo_db_name = etl()
+    launch_app(mysql_db_name, mongo_db_name)
