@@ -11,6 +11,7 @@ import random
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.SPACELAB, dbc.icons.BOOTSTRAP],
            suppress_callback_exceptions=True)
+server = app.server
 
 # Connect to MongoDB and MySQL databases
 MONGO_CLIENT = connect_to_mongodb()
